@@ -2,7 +2,7 @@ package com.trials.statsy.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trials.statsy.models.Transaction;
-import com.trials.statsy.services.TransactionService;
+import com.trials.statsy.services.StatsService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +33,13 @@ public class TransactionControllerTest {
     private ObjectMapper mapper;
 
     @MockBean
-    private TransactionService transactionService;
+    private StatsService statsService;
 
     @Test
     public void shouldReturn201InCaseOfSuccess() throws Exception {
         Transaction transaction = Transaction.builder().amount(2.0).timestamp(Instant.now()).build();
 
-        when(transactionService.add(transaction)).thenReturn(true);
+        when(statsService.add(transaction)).thenReturn(true);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
                 .post(URI.create("/transactions"))
@@ -53,7 +53,7 @@ public class TransactionControllerTest {
     public void shouldReturn204InCaseOfFailure() throws Exception {
         Transaction transaction = Transaction.builder().amount(2.0).timestamp(Instant.now()).build();
 
-        when(transactionService.add(transaction)).thenReturn(false);
+        when(statsService.add(transaction)).thenReturn(false);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
                 .post(URI.create("/transactions"))
