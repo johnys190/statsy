@@ -31,12 +31,12 @@ public class StatsRepositoryTest {
     public void addShouldAddTransactions() {
         Instant now = Instant.now();
         Transaction transaction1 = Transaction.builder().amount(2.0).timestamp(now).build();
-        Transaction transaction2 = Transaction.builder().amount(3.0).timestamp(now).build();
+        Transaction transaction2 = Transaction.builder().amount(3.0).timestamp(now.minusSeconds(59)).build();
 
         statsRepository.add(transaction1);
         statsRepository.add(transaction2);
 
-        assertEquals(2, statsRepository.get(now.getEpochSecond()).size());
+        assertEquals(2, statsRepository.get().size());
     }
 
 }

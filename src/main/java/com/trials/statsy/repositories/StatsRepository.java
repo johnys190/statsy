@@ -27,8 +27,16 @@ public class StatsRepository {
         return false;
     }
 
-    public List<Transaction> get(Long key) {
-        return tranasctionMap.getOrDefault(key, new ArrayList<>());
+    public List<Transaction> get() {
+        return tranasctionMap
+                .entrySet()
+                .stream()
+                .filter(entry -> isValid(entry.getKey()))
+                .collect(Collectors.toConcurrentMap(Map.Entry::getKey, Map.Entry::getValue))
+                .values()
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     private boolean isValid(Long second) {
